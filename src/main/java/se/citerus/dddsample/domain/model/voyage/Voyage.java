@@ -16,9 +16,6 @@ import java.util.Objects;
 @Table(name = "Voyage")
 public class Voyage implements DomainEntity<Voyage> {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
 
   @Column(name = "voyage_number", unique = true)
   private String voyageNumber;

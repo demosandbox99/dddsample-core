@@ -17,9 +17,6 @@ import java.time.Instant;
 @Table(name = "Leg")
 public class Leg implements ValueObject<Leg> {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
 
   @ManyToOne
   @JoinColumn(name="voyage_id")

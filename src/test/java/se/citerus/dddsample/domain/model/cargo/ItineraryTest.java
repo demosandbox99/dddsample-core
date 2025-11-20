@@ -15,10 +15,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.*;
 
 public class ItineraryTest {
-  private final CarrierMovement abc = new CarrierMovement(SHANGHAI, ROTTERDAM, Instant.now(), Instant.now());
-  private final CarrierMovement def = new CarrierMovement(ROTTERDAM, GOTHENBURG, Instant.now(), Instant.now());
-  private final CarrierMovement ghi = new CarrierMovement(ROTTERDAM, NEWYORK, Instant.now(), Instant.now());
-  private final CarrierMovement jkl = new CarrierMovement(SHANGHAI, HELSINKI, Instant.now(), Instant.now());
 
   Voyage voyage, wrongVoyage;
 

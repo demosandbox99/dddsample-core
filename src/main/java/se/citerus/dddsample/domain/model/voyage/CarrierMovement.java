@@ -17,9 +17,6 @@ import java.time.Instant;
 @Table(name = "CarrierMovement")
 public final class CarrierMovement implements ValueObject<CarrierMovement> {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "arrival_location_id", nullable = false)

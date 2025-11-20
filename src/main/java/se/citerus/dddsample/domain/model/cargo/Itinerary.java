@@ -22,11 +22,6 @@ public class Itinerary implements ValueObject<Itinerary> {
 
   private static final Instant END_OF_DAYS = Instant.MAX;
 
-  /**
-   * Constructor.
-   *
-   * @param legs List of legs for this itinerary.
-   */
   public Itinerary(final List<Leg> legs) {
     Validate.notEmpty(legs);
     Validate.noNullElements(legs);
@@ -34,19 +29,10 @@ public class Itinerary implements ValueObject<Itinerary> {
     this.legs = legs;
   }
 
-  /**
-   * @return the legs of this itinerary, as an <b>immutable</b> list.
-   */
   public List<Leg> legs() {
     return new ArrayList<>(legs); // Note: due to JPA requirements, the returned list must be modifiable.
   }
 
-  /**
-   * Test if the given handling event is expected when executing this itinerary.
-   *
-   * @param event Event to test.
-   * @return <code>true</code> if the event is expected
-   */
   public boolean isExpected(final HandlingEvent event) {
     if (legs.isEmpty()) {
       return true;
@@ -88,9 +74,6 @@ public class Itinerary implements ValueObject<Itinerary> {
     return true;
   }
 
-  /**
-   * @return The initial departure location.
-   */
   Location initialDepartureLocation() {
      if (legs.isEmpty()) {
        return Location.UNKNOWN;
@@ -99,9 +82,6 @@ public class Itinerary implements ValueObject<Itinerary> {
      }
   }
 
-  /**
-   * @return The final arrival location.
-   */
   Location finalArrivalLocation() {
     if (legs.isEmpty()) {
       return Location.UNKNOWN;
@@ -110,9 +90,6 @@ public class Itinerary implements ValueObject<Itinerary> {
     }
   }
 
-  /**
-   * @return Date when cargo arrives at final destination.
-   */
   Instant finalArrivalDate() {
     final Leg lastLeg = lastLeg();
 
@@ -123,9 +100,6 @@ public class Itinerary implements ValueObject<Itinerary> {
     }
   }
 
-  /**
-   * @return The last leg on the itinerary.
-   */
   Leg lastLeg() {
     if (legs.isEmpty()) {
       return null;
@@ -134,10 +108,6 @@ public class Itinerary implements ValueObject<Itinerary> {
     }
   }
 
-  /**
-   * @param other itinerary to compare
-   * @return <code>true</code> if the legs in this and the other itinerary are all equal.
-   */
   @Override
   public boolean sameValueAs(final Itinerary other) {
     return other != null && legs.equals(other.legs);
@@ -162,6 +132,4 @@ public class Itinerary implements ValueObject<Itinerary> {
     // Needed by Hibernate
   }
 
-  // Auto-generated surrogate key
-  private Long id;
 }
