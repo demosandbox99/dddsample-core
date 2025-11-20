@@ -1,15 +1,12 @@
 package se.citerus.dddsample.domain.model.location;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 import se.citerus.dddsample.domain.shared.DomainEntity;
 
-import java.util.Objects;
-
 /**
- * A location is our model is stops on a journey, such as cargo
- * origin or destination, or carrier movement endpoints.
- * It is uniquely identified by a UN Locode.
- *
+ * A location is our model is stops on a journey, such as cargo origin or destination, or carrier
+ * movement endpoints. It is uniquely identified by a UN Locode.
  */
 @Entity(name = "Location")
 @Table(name = "Location")
@@ -25,24 +22,20 @@ public final class Location implements DomainEntity<Location> {
   @Column(nullable = false)
   private String name;
 
-  /**
-   * Special Location object that marks an unknown location.
-   */
-  public static final Location UNKNOWN = new Location(
-    new UnLocode("XXXXX"), "Unknown location"
-  );
+  /** Special Location object that marks an unknown location. */
+  public static final Location UNKNOWN = new Location(new UnLocode("XXXXX"), "Unknown location");
 
   /**
    * Package-level constructor, visible for test and sample data purposes.
    *
    * @param unLocode UN Locode
-   * @param name     location name
+   * @param name location name
    * @throws IllegalArgumentException if the UN Locode or name is null
    */
   public Location(final UnLocode unLocode, final String name) {
     Objects.requireNonNull(unLocode);
     Objects.requireNonNull(name);
-    
+
     this.unlocode = unLocode.idString();
     this.name = name;
   }
@@ -90,7 +83,7 @@ public final class Location implements DomainEntity<Location> {
     if (!(object instanceof Location other)) {
       return false;
     }
-      return sameIdentityAs(other);
+    return sameIdentityAs(other);
   }
 
   @Override
@@ -114,5 +107,4 @@ public final class Location implements DomainEntity<Location> {
   Location() {
     // Needed by Hibernate
   }
-
 }

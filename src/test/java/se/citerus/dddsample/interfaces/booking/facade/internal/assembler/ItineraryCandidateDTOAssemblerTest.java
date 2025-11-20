@@ -1,5 +1,14 @@
 package se.citerus.dddsample.interfaces.booking.facade.internal.assembler;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.*;
+import static se.citerus.dddsample.infrastructure.sampledata.SampleVoyages.CM001;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import se.citerus.dddsample.domain.model.cargo.Itinerary;
 import se.citerus.dddsample.domain.model.cargo.Leg;
@@ -11,16 +20,6 @@ import se.citerus.dddsample.infrastructure.persistence.inmemory.VoyageRepository
 import se.citerus.dddsample.interfaces.booking.facade.dto.LegDTO;
 import se.citerus.dddsample.interfaces.booking.facade.dto.RouteCandidateDTO;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.*;
-import static se.citerus.dddsample.infrastructure.sampledata.SampleVoyages.CM001;
-
 public class ItineraryCandidateDTOAssemblerTest {
 
   @Test
@@ -30,12 +29,11 @@ public class ItineraryCandidateDTOAssemblerTest {
     final Location origin = STOCKHOLM;
     final Location destination = MELBOURNE;
 
-    final Itinerary itinerary = new Itinerary(
-      List.of(
-        new Leg(CM001, origin, SHANGHAI, Instant.now(), Instant.now()),
-        new Leg(CM001, ROTTERDAM, destination, Instant.now(), Instant.now())
-      )
-    );
+    final Itinerary itinerary =
+        new Itinerary(
+            List.of(
+                new Leg(CM001, origin, SHANGHAI, Instant.now(), Instant.now()),
+                new Leg(CM001, ROTTERDAM, destination, Instant.now(), Instant.now())));
 
     final RouteCandidateDTO dto = assembler.toDTO(itinerary);
 
@@ -66,11 +64,10 @@ public class ItineraryCandidateDTOAssemblerTest {
 
     final VoyageRepository voyageRepository = new VoyageRepositoryInMem();
 
-
     // Tested call
-    final Itinerary itinerary = assembler.fromDTO(new RouteCandidateDTO(legs), voyageRepository, locationRepository);
+    final Itinerary itinerary =
+        assembler.fromDTO(new RouteCandidateDTO(legs), voyageRepository, locationRepository);
 
-    
     assertThat(itinerary).isNotNull();
     assertThat(itinerary.legs()).isNotNull();
     assertThat(itinerary.legs()).hasSize(2);

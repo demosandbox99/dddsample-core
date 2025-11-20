@@ -1,15 +1,14 @@
 package se.citerus.dddsample.domain.model.location;
 
+import java.util.Objects;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.Validate;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
-import java.util.Objects;
-import java.util.regex.Pattern;
-
 /**
  * United nations location code.
- * 
- * http://www.unece.org/cefact/locode/
+ *
+ * <p>http://www.unece.org/cefact/locode/
  * http://www.unece.org/cefact/locode/DocColumnDescription.htm#LOCODE
  */
 public final class UnLocode implements ValueObject<UnLocode> {
@@ -27,8 +26,9 @@ public final class UnLocode implements ValueObject<UnLocode> {
    */
   public UnLocode(final String countryAndLocation) {
     Objects.requireNonNull(countryAndLocation, "Country and location may not be null");
-    Validate.isTrue(VALID_PATTERN.matcher(countryAndLocation).matches(),
-      countryAndLocation + " is not a valid UN/LOCODE (does not match pattern)");
+    Validate.isTrue(
+        VALID_PATTERN.matcher(countryAndLocation).matches(),
+        countryAndLocation + " is not a valid UN/LOCODE (does not match pattern)");
 
     this.unlocode = countryAndLocation.toUpperCase();
   }
@@ -68,5 +68,4 @@ public final class UnLocode implements ValueObject<UnLocode> {
   UnLocode() {
     // Needed by Hibernate
   }
-
 }

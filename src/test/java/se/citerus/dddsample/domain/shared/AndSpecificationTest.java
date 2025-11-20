@@ -1,8 +1,8 @@
 package se.citerus.dddsample.domain.shared;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 public class AndSpecificationTest {
 
@@ -22,6 +22,5 @@ public class AndSpecificationTest {
 
     andSpecification = new AndSpecification<Object>(falseSpec, falseSpec);
     assertThat(andSpecification.isSatisfiedBy(new Object())).isFalse();
-
   }
 }

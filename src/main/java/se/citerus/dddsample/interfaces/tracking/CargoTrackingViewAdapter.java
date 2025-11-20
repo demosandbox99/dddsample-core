@@ -1,5 +1,8 @@
 package se.citerus.dddsample.interfaces.tracking;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import org.springframework.context.MessageSource;
 import se.citerus.dddsample.domain.model.cargo.Cargo;
 import se.citerus.dddsample.domain.model.cargo.Delivery;
@@ -8,13 +11,7 @@ import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.voyage.Voyage;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-
-/**
- * View adapter for displaying a cargo in a tracking context.
- */
+/** View adapter for displaying a cargo in a tracking context. */
 public final class CargoTrackingViewAdapter {
 
   private final Cargo cargo;
@@ -24,7 +21,7 @@ public final class CargoTrackingViewAdapter {
   private final String FORMAT = "yyyy-MM-dd hh:mm";
   private final TimeZone timeZone;
 
-    /**
+  /**
    * Constructor.
    *
    * @param cargo
@@ -32,29 +29,35 @@ public final class CargoTrackingViewAdapter {
    * @param locale
    * @param handlingEvents
    */
-  public CargoTrackingViewAdapter(Cargo cargo, MessageSource messageSource, Locale locale, List<HandlingEvent> handlingEvents) {
+  public CargoTrackingViewAdapter(
+      Cargo cargo, MessageSource messageSource, Locale locale, List<HandlingEvent> handlingEvents) {
     this(cargo, messageSource, locale, handlingEvents, TimeZone.getDefault());
   }
 
-    /**
-     * Constructor.
-     *
-     * @param cargo
-     * @param messageSource
-     * @param locale
-     * @param handlingEvents
-     */
-    public CargoTrackingViewAdapter(Cargo cargo, MessageSource messageSource, Locale locale, List<HandlingEvent> handlingEvents, TimeZone tz) {
-      this.messageSource = messageSource;
-      this.locale = locale;
-      this.cargo = cargo;
-      this.timeZone = tz;
+  /**
+   * Constructor.
+   *
+   * @param cargo
+   * @param messageSource
+   * @param locale
+   * @param handlingEvents
+   */
+  public CargoTrackingViewAdapter(
+      Cargo cargo,
+      MessageSource messageSource,
+      Locale locale,
+      List<HandlingEvent> handlingEvents,
+      TimeZone tz) {
+    this.messageSource = messageSource;
+    this.locale = locale;
+    this.cargo = cargo;
+    this.timeZone = tz;
 
-      this.events = new ArrayList<>(handlingEvents.size());
-        for (HandlingEvent handlingEvent : handlingEvents) {
-          events.add(new HandlingEventViewAdapter(handlingEvent));
-        }
+    this.events = new ArrayList<>(handlingEvents.size());
+    for (HandlingEvent handlingEvent : handlingEvents) {
+      events.add(new HandlingEventViewAdapter(handlingEvent));
     }
+  }
 
   /**
    * @param location a location
@@ -72,7 +75,7 @@ public final class CargoTrackingViewAdapter {
   }
 
   /**
-   * @return A translated string describing the cargo status. 
+   * @return A translated string describing the cargo status.
    */
   public String getStatusText() {
     final Delivery delivery = cargo.delivery();
@@ -93,7 +96,7 @@ public final class CargoTrackingViewAdapter {
         args = null;
         break;
     }
-    
+
     return messageSource.getMessage(code, args, "[Unknown status]", locale);
   }
 
@@ -126,24 +129,30 @@ public final class CargoTrackingViewAdapter {
   }
 
   public String getNextExpectedActivity() {
-      HandlingActivity activity = cargo.delivery().nextExpectedActivity();
-      if (activity == null) {
-        return "";
-      }
+    HandlingActivity activity = cargo.delivery().nextExpectedActivity();
+    if (activity == null) {
+      return "";
+    }
 
     String text = "Next expected activity is to ";
     HandlingEvent.Type type = activity.type();
     if (type.sameValueAs(HandlingEvent.Type.LOAD)) {
-        return
-          text + type.name().toLowerCase() + " cargo onto voyage " + activity.voyage().voyageNumber() +
-          " in " + activity.location().name();
-      } else if (type.sameValueAs(HandlingEvent.Type.UNLOAD)) {
-        return
-          text + type.name().toLowerCase() + " cargo off of " + activity.voyage().voyageNumber() +
-          " in " + activity.location().name();
-      } else {
-        return text + type.name().toLowerCase() + " cargo in " + activity.location().name();
-      }
+      return text
+          + type.name().toLowerCase()
+          + " cargo onto voyage "
+          + activity.voyage().voyageNumber()
+          + " in "
+          + activity.location().name();
+    } else if (type.sameValueAs(HandlingEvent.Type.UNLOAD)) {
+      return text
+          + type.name().toLowerCase()
+          + " cargo off of "
+          + activity.voyage().voyageNumber()
+          + " in "
+          + activity.location().name();
+    } else {
+      return text + type.name().toLowerCase() + " cargo in " + activity.location().name();
+    }
   }
 
   /**
@@ -153,9 +162,7 @@ public final class CargoTrackingViewAdapter {
     return cargo.delivery().isMisdirected();
   }
 
-  /**
-   * Handling event view adapter component.
-   */
+  /** Handling event view adapter component. */
   public final class HandlingEventViewAdapter {
 
     private final HandlingEvent handlingEvent;
@@ -180,7 +187,9 @@ public final class CargoTrackingViewAdapter {
      * @return Time when the event was completed.
      */
     public String getTime() {
-      return DateTimeFormatter.ofPattern(FORMAT).withZone(timeZone.toZoneId()).format(handlingEvent.completionTime());
+      return DateTimeFormatter.ofPattern(FORMAT)
+          .withZone(timeZone.toZoneId())
+          .format(handlingEvent.completionTime());
     }
 
     /**
@@ -211,19 +220,17 @@ public final class CargoTrackingViewAdapter {
       switch (handlingEvent.type()) {
         case LOAD:
         case UNLOAD:
-          args = new Object[] {
-            handlingEvent.voyage().voyageNumber().idString(),
-            handlingEvent.location().name(),
-            handlingEvent.completionTime()
-          };
+          args =
+              new Object[] {
+                handlingEvent.voyage().voyageNumber().idString(),
+                handlingEvent.location().name(),
+                handlingEvent.completionTime()
+              };
           break;
 
         case RECEIVE:
         case CLAIM:
-          args = new Object[] {
-            handlingEvent.location().name(),
-            handlingEvent.completionTime()
-          };
+          args = new Object[] {handlingEvent.location().name(), handlingEvent.completionTime()};
           break;
 
         default:
@@ -232,9 +239,7 @@ public final class CargoTrackingViewAdapter {
 
       String key = "deliveryHistory.eventDescription." + handlingEvent.type().name();
 
-      return messageSource.getMessage(key,args,locale);
+      return messageSource.getMessage(key, args, locale);
     }
-
   }
-  
 }

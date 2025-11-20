@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * DTO for presenting and selecting an itinerary from a collection of candidates.
- */
+/** DTO for presenting and selecting an itinerary from a collection of candidates. */
 public final class RouteCandidateDTO implements Serializable {
 
   private final List<LegDTO> legs;

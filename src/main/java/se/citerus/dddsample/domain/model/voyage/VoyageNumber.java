@@ -1,20 +1,16 @@
 package se.citerus.dddsample.domain.model.voyage;
 
+import java.util.Objects;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
-import java.util.Objects;
-
-/**
- * Identifies a voyage.
- * 
- */
+/** Identifies a voyage. */
 public class VoyageNumber implements ValueObject<VoyageNumber> {
 
   private String number;
 
   public VoyageNumber(String number) {
     Objects.requireNonNull(number);
-    
+
     this.number = number;
   }
 
@@ -25,7 +21,7 @@ public class VoyageNumber implements ValueObject<VoyageNumber> {
     if (!(o instanceof VoyageNumber)) return false;
 
     final VoyageNumber other = (VoyageNumber) o;
-    
+
     return sameValueAs(other);
   }
 
@@ -51,5 +47,4 @@ public class VoyageNumber implements ValueObject<VoyageNumber> {
   VoyageNumber() {
     // Needed by Hibernate
   }
-  
 }

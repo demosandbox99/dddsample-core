@@ -1,5 +1,9 @@
 package se.citerus.dddsample.application.impl;
 
+import java.lang.invoke.MethodHandles;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,23 +14,20 @@ import se.citerus.dddsample.domain.model.location.LocationRepository;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.service.RoutingService;
 
-import java.lang.invoke.MethodHandles;
-import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
-
 public class BookingServiceImpl implements BookingService {
 
   private final CargoRepository cargoRepository;
   private final LocationRepository locationRepository;
   private final RoutingService routingService;
   private final CargoFactory cargoFactory;
-  private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger =
+      LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  public BookingServiceImpl(final CargoRepository cargoRepository,
-                            final LocationRepository locationRepository,
-                            final RoutingService routingService,
-                            final CargoFactory cargoFactory) {
+  public BookingServiceImpl(
+      final CargoRepository cargoRepository,
+      final LocationRepository locationRepository,
+      final RoutingService routingService,
+      final CargoFactory cargoFactory) {
     this.cargoRepository = cargoRepository;
     this.locationRepository = locationRepository;
     this.routingService = routingService;
@@ -35,9 +36,10 @@ public class BookingServiceImpl implements BookingService {
 
   @Override
   @Transactional
-  public TrackingId bookNewCargo(final UnLocode originUnLocode,
-                                 final UnLocode destinationUnLocode,
-                                 final Instant arrivalDeadline) {
+  public TrackingId bookNewCargo(
+      final UnLocode originUnLocode,
+      final UnLocode destinationUnLocode,
+      final Instant arrivalDeadline) {
     Cargo cargo = cargoFactory.createCargo(originUnLocode, destinationUnLocode, arrivalDeadline);
 
     cargoRepository.store(cargo);
@@ -63,7 +65,8 @@ public class BookingServiceImpl implements BookingService {
   public void assignCargoToRoute(final Itinerary itinerary, final TrackingId trackingId) {
     final Cargo cargo = cargoRepository.find(trackingId);
     if (cargo == null) {
-      throw new IllegalArgumentException("Can't assign itinerary to non-existing cargo " + trackingId);
+      throw new IllegalArgumentException(
+          "Can't assign itinerary to non-existing cargo " + trackingId);
     }
 
     cargo.assignToRoute(itinerary);
@@ -78,13 +81,13 @@ public class BookingServiceImpl implements BookingService {
     final Cargo cargo = cargoRepository.find(trackingId);
     final Location newDestination = locationRepository.find(unLocode);
 
-    final RouteSpecification routeSpecification = new RouteSpecification(
-      cargo.origin(), newDestination, cargo.routeSpecification().arrivalDeadline()
-    );
+    final RouteSpecification routeSpecification =
+        new RouteSpecification(
+            cargo.origin(), newDestination, cargo.routeSpecification().arrivalDeadline());
     cargo.specifyNewRoute(routeSpecification);
 
     cargoRepository.store(cargo);
-    logger.info("Changed destination for cargo {} to {}", trackingId, routeSpecification.destination());
+    logger.info(
+        "Changed destination for cargo {} to {}", trackingId, routeSpecification.destination());
   }
-
 }

@@ -1,17 +1,13 @@
 package se.citerus.dddsample.domain.model.voyage;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-/**
- * A voyage schedule.
- * 
- */
+/** A voyage schedule. */
 public class Schedule implements ValueObject<Schedule> {
 
   private List<CarrierMovement> carrierMovements = Collections.emptyList();
@@ -56,5 +52,4 @@ public class Schedule implements ValueObject<Schedule> {
   Schedule() {
     // Needed by Hibernate
   }
-
 }

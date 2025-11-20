@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * DTO for registering and routing a cargo.
- */
+/** DTO for registering and routing a cargo. */
 public final class CargoRoutingDTO implements Serializable {
 
   private final String trackingId;
@@ -29,7 +27,12 @@ public final class CargoRoutingDTO implements Serializable {
    * @param arrivalDeadline
    * @param misrouted
    */
-  public CargoRoutingDTO(String trackingId, String origin, String finalDestination, Instant arrivalDeadline, boolean misrouted) {
+  public CargoRoutingDTO(
+      String trackingId,
+      String origin,
+      String finalDestination,
+      Instant arrivalDeadline,
+      boolean misrouted) {
     this.trackingId = trackingId;
     this.origin = origin;
     this.finalDestination = finalDestination;
@@ -50,7 +53,8 @@ public final class CargoRoutingDTO implements Serializable {
     return finalDestination;
   }
 
-  public void addLeg(String voyageNumber, String from, String to, Instant loadTime, Instant unloadTime) {
+  public void addLeg(
+      String voyageNumber, String from, String to, Instant loadTime, Instant unloadTime) {
     legs.add(new LegDTO(voyageNumber, from, to, loadTime, unloadTime));
   }
 

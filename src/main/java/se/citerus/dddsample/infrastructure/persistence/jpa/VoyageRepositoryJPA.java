@@ -6,9 +6,7 @@ import se.citerus.dddsample.domain.model.voyage.Voyage;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
 
-/**
- * Hibernate implementation of CarrierMovementRepository.
- */
+/** Hibernate implementation of CarrierMovementRepository. */
 public interface VoyageRepositoryJPA extends CrudRepository<Voyage, Long>, VoyageRepository {
 
   default Voyage find(final VoyageNumber voyageNumber) {

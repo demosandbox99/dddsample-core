@@ -2,9 +2,7 @@ package se.citerus.dddsample.domain.model.handling;
 
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 
-/**
- * Handling event repository.
- */
+/** Handling event repository. */
 public interface HandlingEventRepository {
 
   /**
@@ -14,11 +12,9 @@ public interface HandlingEventRepository {
    */
   void store(HandlingEvent event);
 
-
   /**
    * @param trackingId cargo tracking id
    * @return The handling history of this cargo
    */
   HandlingHistory lookupHandlingHistoryOfCargo(TrackingId trackingId);
-
 }

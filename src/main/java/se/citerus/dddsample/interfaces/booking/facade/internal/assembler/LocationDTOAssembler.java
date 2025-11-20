@@ -1,10 +1,9 @@
 package se.citerus.dddsample.interfaces.booking.facade.internal.assembler;
 
-import se.citerus.dddsample.domain.model.location.Location;
-import se.citerus.dddsample.interfaces.booking.facade.dto.LocationDTO;
-
 import java.util.ArrayList;
 import java.util.List;
+import se.citerus.dddsample.domain.model.location.Location;
+import se.citerus.dddsample.interfaces.booking.facade.dto.LocationDTO;
 
 public class LocationDTOAssembler {
 

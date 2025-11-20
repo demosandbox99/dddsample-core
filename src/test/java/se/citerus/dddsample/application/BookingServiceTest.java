@@ -1,5 +1,13 @@
 package se.citerus.dddsample.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.*;
+import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.CHICAGO;
+import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.STOCKHOLM;
+
+import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.citerus.dddsample.application.impl.BookingServiceImpl;
@@ -10,15 +18,6 @@ import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.location.LocationRepository;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.service.RoutingService;
-
-import java.time.Instant;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
-import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.CHICAGO;
-import static se.citerus.dddsample.infrastructure.sampledata.SampleLocations.STOCKHOLM;
 
 public class BookingServiceTest {
 
@@ -34,7 +33,8 @@ public class BookingServiceTest {
     locationRepository = mock(LocationRepository.class);
     routingService = mock(RoutingService.class);
     cargoFactory = new CargoFactory(locationRepository, cargoRepository);
-    bookingService = new BookingServiceImpl(cargoRepository, locationRepository, routingService, cargoFactory);
+    bookingService =
+        new BookingServiceImpl(cargoRepository, locationRepository, routingService, cargoFactory);
   }
 
   @Test

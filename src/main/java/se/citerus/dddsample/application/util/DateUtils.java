@@ -3,10 +3,7 @@ package se.citerus.dddsample.application.util;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 
-/**
- * A few utils for working with Date in tests.
- *
- */
+/** A few utils for working with Date in tests. */
 public final class DateUtils {
 
   /**
@@ -30,9 +27,6 @@ public final class DateUtils {
     }
   }
 
-  /**
-   * Prevent instantiation.
-   */
-  private DateUtils() {
-  }
+  /** Prevent instantiation. */
+  private DateUtils() {}
 }

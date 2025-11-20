@@ -1,8 +1,6 @@
 package se.citerus.dddsample.interfaces.booking.web;
 
-/**
- *
- */
+/** */
 public final class RegistrationCommand {
 
   private String originUnlocode;

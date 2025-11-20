@@ -5,11 +5,10 @@ import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.interfaces.handling.HandlingEventRegistrationAttempt;
 
 /**
- * This interface provides a way to let other parts
- * of the system know about events that have occurred.
- * 
- * It may be implemented synchronously or asynchronously, using
- * for example JMS.
+ * This interface provides a way to let other parts of the system know about events that have
+ * occurred.
+ *
+ * <p>It may be implemented synchronously or asynchronously, using for example JMS.
  */
 public interface ApplicationEvents {
 
@@ -40,5 +39,4 @@ public interface ApplicationEvents {
    * @param attempt handling event registration attempt
    */
   void receivedHandlingEventRegistrationAttempt(HandlingEventRegistrationAttempt attempt);
-
 }
