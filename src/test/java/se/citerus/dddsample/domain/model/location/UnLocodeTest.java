@@ -1,17 +1,17 @@
 package se.citerus.dddsample.domain.model.location;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 public class UnLocodeTest {
 
-  @ValueSource(strings = {"AA234","AAA9B","AAAAA"})
+  @ValueSource(strings = {"AA234", "AAA9B", "AAAAA"})
   @ParameterizedTest
   public void shouldAllowCreationOfValidUnLoCodes(String input) {
     assertThat(new UnLocode(input)).isNotNull();
@@ -22,7 +22,8 @@ public class UnLocodeTest {
   @EmptySource
   @ParameterizedTest
   public void shouldPreventCreationOfInvalidUnLoCodes(String input) {
-    assertThatThrownBy(() -> new UnLocode(input)).isInstanceOfAny(NullPointerException.class, IllegalArgumentException.class);
+    assertThatThrownBy(() -> new UnLocode(input))
+        .isInstanceOfAny(NullPointerException.class, IllegalArgumentException.class);
   }
 
   @Test
@@ -48,7 +49,6 @@ public class UnLocodeTest {
     UnLocode allCaps = new UnLocode("ABCDE");
     UnLocode mixedCase = new UnLocode("aBcDe");
 
-    assertThat(mixedCase.hashCode()).isEqualTo(allCaps.hashCode());  
+    assertThat(mixedCase.hashCode()).isEqualTo(allCaps.hashCode());
   }
-
 }

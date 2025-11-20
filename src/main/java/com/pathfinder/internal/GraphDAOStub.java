@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GraphDAOStub implements GraphDAO{
+public class GraphDAOStub implements GraphDAO {
 
   private static final Random random = new Random();
 
   public List<String> listAllNodes() {
-    return new ArrayList<String>(List.of(
-      "CNHKG", "AUMEL", "SESTO", "FIHEL", "USCHI", "JNTKO", "DEHAM", "CNSHA", "NLRTM", "SEGOT", "CNHGH", "USNYC", "USDAL"
-    ));
+    return new ArrayList<String>(
+        List.of(
+            "CNHKG", "AUMEL", "SESTO", "FIHEL", "USCHI", "JNTKO", "DEHAM", "CNSHA", "NLRTM",
+            "SEGOT", "CNHGH", "USNYC", "USDAL"));
   }
 
   public String getTransitEdge(String from, String to) {
@@ -22,5 +23,4 @@ public class GraphDAOStub implements GraphDAO{
     if (i == 3) return "0301S";
     return "0400S";
   }
-  
 }

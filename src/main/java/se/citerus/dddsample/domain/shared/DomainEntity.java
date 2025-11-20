@@ -1,9 +1,6 @@
 package se.citerus.dddsample.domain.shared;
 
-/**
- * An entity, as explained in the DDD book.
- *  
- */
+/** An entity, as explained in the DDD book. */
 public interface DomainEntity<T> {
 
   /**
@@ -13,5 +10,4 @@ public interface DomainEntity<T> {
    * @return true if the identities are the same, regardless of other attributes.
    */
   boolean sameIdentityAs(T other);
-
 }

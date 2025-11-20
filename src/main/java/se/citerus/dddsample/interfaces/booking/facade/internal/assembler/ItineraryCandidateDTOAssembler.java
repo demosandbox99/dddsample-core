@@ -1,5 +1,7 @@
 package se.citerus.dddsample.interfaces.booking.facade.internal.assembler;
 
+import java.util.ArrayList;
+import java.util.List;
 import se.citerus.dddsample.domain.model.cargo.Itinerary;
 import se.citerus.dddsample.domain.model.cargo.Leg;
 import se.citerus.dddsample.domain.model.location.Location;
@@ -11,12 +13,7 @@ import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
 import se.citerus.dddsample.interfaces.booking.facade.dto.LegDTO;
 import se.citerus.dddsample.interfaces.booking.facade.dto.RouteCandidateDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Assembler class for the ItineraryCandidateDTO.
- */
+/** Assembler class for the ItineraryCandidateDTO. */
 public class ItineraryCandidateDTOAssembler {
 
   /**
@@ -39,7 +36,8 @@ public class ItineraryCandidateDTOAssembler {
     final VoyageNumber voyageNumber = leg.voyage().voyageNumber();
     final UnLocode from = leg.loadLocation().unLocode();
     final UnLocode to = leg.unloadLocation().unLocode();
-    return new LegDTO(voyageNumber.idString(), from.idString(), to.idString(), leg.loadTime(), leg.unloadTime());
+    return new LegDTO(
+        voyageNumber.idString(), from.idString(), to.idString(), leg.loadTime(), leg.unloadTime());
   }
 
   /**
@@ -48,9 +46,10 @@ public class ItineraryCandidateDTOAssembler {
    * @param locationRepository location repository
    * @return An itinerary
    */
-  public Itinerary fromDTO(final RouteCandidateDTO routeCandidateDTO,
-                           final VoyageRepository voyageRepository,
-                           final LocationRepository locationRepository) {
+  public Itinerary fromDTO(
+      final RouteCandidateDTO routeCandidateDTO,
+      final VoyageRepository voyageRepository,
+      final LocationRepository locationRepository) {
     final List<Leg> legs = new ArrayList<Leg>(routeCandidateDTO.getLegs().size());
     for (LegDTO legDTO : routeCandidateDTO.getLegs()) {
       final VoyageNumber voyageNumber = new VoyageNumber(legDTO.getVoyageNumber());

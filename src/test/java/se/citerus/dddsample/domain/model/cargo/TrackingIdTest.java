@@ -1,8 +1,8 @@
 package se.citerus.dddsample.domain.model.cargo;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
 
 public class TrackingIdTest {
 
@@ -10,5 +10,4 @@ public class TrackingIdTest {
   public void testConstructor() {
     assertThatThrownBy(() -> new TrackingId(null)).isInstanceOf(NullPointerException.class);
   }
-
 }

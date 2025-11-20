@@ -1,19 +1,15 @@
 package se.citerus.dddsample.domain.model.cargo;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.lang3.Validate;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-/**
- * An itinerary.
- *
- */
+/** An itinerary. */
 public class Itinerary implements ValueObject<Itinerary> {
 
   private List<Leg> legs = Collections.emptyList();
@@ -38,7 +34,8 @@ public class Itinerary implements ValueObject<Itinerary> {
    * @return the legs of this itinerary, as an <b>immutable</b> list.
    */
   public List<Leg> legs() {
-    return new ArrayList<>(legs); // Note: due to JPA requirements, the returned list must be modifiable.
+    return new ArrayList<>(
+        legs); // Note: due to JPA requirements, the returned list must be modifiable.
   }
 
   /**
@@ -53,38 +50,36 @@ public class Itinerary implements ValueObject<Itinerary> {
     }
 
     if (event.type() == HandlingEvent.Type.RECEIVE) {
-      //Check that the first leg's origin is the event's location
+      // Check that the first leg's origin is the event's location
       final Leg leg = legs.get(0);
       return (leg.loadLocation().equals(event.location()));
     }
 
     if (event.type() == HandlingEvent.Type.LOAD) {
-      //Check that the there is one leg with same load location and voyage
+      // Check that the there is one leg with same load location and voyage
       for (Leg leg : legs) {
-        if (leg.loadLocation().sameIdentityAs(event.location()) &&
-            leg.voyage().sameIdentityAs(event.voyage()))
-          return true;
+        if (leg.loadLocation().sameIdentityAs(event.location())
+            && leg.voyage().sameIdentityAs(event.voyage())) return true;
       }
       return false;
     }
 
     if (event.type() == HandlingEvent.Type.UNLOAD) {
-      //Check that the there is one leg with same unload location and voyage
+      // Check that the there is one leg with same unload location and voyage
       for (Leg leg : legs) {
-        if (leg.unloadLocation().equals(event.location()) &&
-            leg.voyage().equals(event.voyage()))
+        if (leg.unloadLocation().equals(event.location()) && leg.voyage().equals(event.voyage()))
           return true;
       }
       return false;
     }
 
     if (event.type() == HandlingEvent.Type.CLAIM) {
-      //Check that the last leg's destination is from the event's location
+      // Check that the last leg's destination is from the event's location
       final Leg leg = lastLeg();
       return (leg.unloadLocation().equals(event.location()));
     }
 
-    //HandlingEvent.Type.CUSTOMS;
+    // HandlingEvent.Type.CUSTOMS;
     return true;
   }
 
@@ -92,11 +87,11 @@ public class Itinerary implements ValueObject<Itinerary> {
    * @return The initial departure location.
    */
   Location initialDepartureLocation() {
-     if (legs.isEmpty()) {
-       return Location.UNKNOWN;
-     } else {
-       return legs.get(0).loadLocation();
-     }
+    if (legs.isEmpty()) {
+      return Location.UNKNOWN;
+    } else {
+      return legs.get(0).loadLocation();
+    }
   }
 
   /**

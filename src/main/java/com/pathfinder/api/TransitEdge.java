@@ -3,11 +3,7 @@ package com.pathfinder.api;
 import java.io.Serializable;
 import java.time.Instant;
 
-/**
- * Represents an edge in a path through a graph,
- * describing the route of a cargo.
- *  
- */
+/** Represents an edge in a path through a graph, describing the route of a cargo. */
 public final class TransitEdge implements Serializable {
 
   private final String edge;
@@ -25,11 +21,12 @@ public final class TransitEdge implements Serializable {
    * @param fromDate
    * @param toDate
    */
-  public TransitEdge(final String edge,
-                     final String fromNode,
-                     final String toNode,
-                     final Instant fromDate,
-                     final Instant toDate) {
+  public TransitEdge(
+      final String edge,
+      final String fromNode,
+      final String toNode,
+      final Instant fromDate,
+      final Instant toDate) {
     this.edge = edge;
     this.fromNode = fromNode;
     this.toNode = toNode;

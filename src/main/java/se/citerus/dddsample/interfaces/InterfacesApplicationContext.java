@@ -1,6 +1,9 @@
 package se.citerus.dddsample.interfaces;
 
 import jakarta.persistence.EntityManager;
+import java.io.File;
+import java.lang.invoke.MethodHandles;
+import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,79 +30,82 @@ import se.citerus.dddsample.interfaces.handling.file.UploadDirectoryScanner;
 import se.citerus.dddsample.interfaces.tracking.TrackCommandValidator;
 import se.citerus.dddsample.interfaces.tracking.ws.CargoTrackingRestService;
 
-import java.io.File;
-import java.lang.invoke.MethodHandles;
-import java.util.Locale;
-
 @Configuration
 public class InterfacesApplicationContext implements WebMvcConfigurer {
-    private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Value("${uploadDirectory}")
-    public String uploadDirectory;
+  @Value("${uploadDirectory}")
+  public String uploadDirectory;
 
-    @Value("${parseFailureDirectory}")
-    public String parseFailureDirectory;
+  @Value("${parseFailureDirectory}")
+  public String parseFailureDirectory;
 
-    @Autowired
-    public EntityManager entityManager;
+  @Autowired public EntityManager entityManager;
 
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
-        return messageSource;
+  @Bean
+  public MessageSource messageSource() {
+    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+    messageSource.setBasename("messages");
+    return messageSource;
+  }
+
+  @Bean
+  public FixedLocaleResolver localeResolver() {
+    FixedLocaleResolver fixedLocaleResolver = new FixedLocaleResolver();
+    fixedLocaleResolver.setDefaultLocale(Locale.ENGLISH);
+    return fixedLocaleResolver;
+  }
+
+  @Bean
+  public CargoTrackingRestService cargoTrackingRestService(
+      CargoRepository cargoRepository,
+      HandlingEventRepository handlingEventRepository,
+      MessageSource messageSource) {
+    return new CargoTrackingRestService(cargoRepository, handlingEventRepository, messageSource);
+  }
+
+  @Bean
+  public TrackCommandValidator trackCommandValidator() {
+    return new TrackCommandValidator();
+  }
+
+  @Bean
+  public BookingServiceFacade bookingServiceFacade(
+      BookingService bookingService,
+      LocationRepository locationRepository,
+      CargoRepository cargoRepository,
+      VoyageRepository voyageRepository) {
+    return new BookingServiceFacadeImpl(
+        bookingService, locationRepository, cargoRepository, voyageRepository);
+  }
+
+  @Bean
+  public UploadDirectoryScanner uploadDirectoryScanner(ApplicationEvents applicationEvents) {
+    File uploadDirectoryFile = new File(uploadDirectory);
+    File parseFailureDirectoryFile = new File(parseFailureDirectory);
+    return new UploadDirectoryScanner(
+        uploadDirectoryFile, parseFailureDirectoryFile, applicationEvents);
+  }
+
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    OpenEntityManagerInViewInterceptor openSessionInViewInterceptor =
+        new OpenEntityManagerInViewInterceptor();
+    openSessionInViewInterceptor.setEntityManagerFactory(entityManager.getEntityManagerFactory());
+    registry.addWebRequestInterceptor(openSessionInViewInterceptor);
+  }
+
+  @Bean
+  public ThreadPoolTaskScheduler myScheduler(@Nullable UploadDirectoryScanner scanner) {
+    if (scanner == null) {
+      log.info("No UploadDirectoryScannerBean found, skipping creation of scheduler.");
+      return null;
     }
-
-    @Bean
-    public FixedLocaleResolver localeResolver() {
-        FixedLocaleResolver fixedLocaleResolver = new FixedLocaleResolver();
-        fixedLocaleResolver.setDefaultLocale(Locale.ENGLISH);
-        return fixedLocaleResolver;
-    }
-
-    @Bean
-    public CargoTrackingRestService cargoTrackingRestService(CargoRepository cargoRepository, HandlingEventRepository handlingEventRepository, MessageSource messageSource) {
-        return new CargoTrackingRestService(cargoRepository, handlingEventRepository, messageSource);
-    }
-
-    @Bean
-    public TrackCommandValidator trackCommandValidator() {
-        return new TrackCommandValidator();
-    }
-
-    @Bean
-    public BookingServiceFacade bookingServiceFacade(BookingService bookingService, LocationRepository locationRepository, CargoRepository cargoRepository, VoyageRepository voyageRepository) {
-        return new BookingServiceFacadeImpl(bookingService, locationRepository, cargoRepository, voyageRepository);
-    }
-
-    @Bean
-    public UploadDirectoryScanner uploadDirectoryScanner(ApplicationEvents applicationEvents) {
-        File uploadDirectoryFile = new File(uploadDirectory);
-        File parseFailureDirectoryFile = new File(parseFailureDirectory);
-        return new UploadDirectoryScanner(uploadDirectoryFile, parseFailureDirectoryFile, applicationEvents);
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        OpenEntityManagerInViewInterceptor openSessionInViewInterceptor = new OpenEntityManagerInViewInterceptor();
-        openSessionInViewInterceptor.setEntityManagerFactory(entityManager.getEntityManagerFactory());
-        registry.addWebRequestInterceptor(openSessionInViewInterceptor);
-    }
-
-    @Bean
-    public ThreadPoolTaskScheduler myScheduler(@Nullable UploadDirectoryScanner scanner) {
-        if (scanner == null) {
-            log.info("No UploadDirectoryScannerBean found, skipping creation of scheduler.");
-            return null;
-        }
-        ThreadPoolTaskScheduler threadPoolTaskScheduler
-            = new ThreadPoolTaskScheduler();
-        threadPoolTaskScheduler.setPoolSize(10);
-        threadPoolTaskScheduler.setThreadNamePrefix(
-            "ThreadPoolTaskScheduler");
-        threadPoolTaskScheduler.initialize();
-        threadPoolTaskScheduler.scheduleAtFixedRate(scanner, 5000);
-        return threadPoolTaskScheduler;
-    }
+    ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+    threadPoolTaskScheduler.setPoolSize(10);
+    threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
+    threadPoolTaskScheduler.initialize();
+    threadPoolTaskScheduler.scheduleAtFixedRate(scanner, 5000);
+    return threadPoolTaskScheduler;
+  }
 }

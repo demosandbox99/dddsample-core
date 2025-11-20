@@ -1,11 +1,10 @@
 package se.citerus.dddsample.infrastructure.persistence.inmemory;
 
+import java.util.List;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.LocationRepository;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.infrastructure.sampledata.SampleLocations;
-
-import java.util.List;
 
 public class LocationRepositoryInMem implements LocationRepository {
 
@@ -26,5 +25,4 @@ public class LocationRepositoryInMem implements LocationRepository {
   public Location store(Location location) {
     return location;
   }
-
 }

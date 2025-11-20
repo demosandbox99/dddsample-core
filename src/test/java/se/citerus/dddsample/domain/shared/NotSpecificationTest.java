@@ -1,8 +1,8 @@
 package se.citerus.dddsample.domain.shared;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 public class NotSpecificationTest {
 
@@ -16,6 +16,5 @@ public class NotSpecificationTest {
 
     notSpecification = new NotSpecification<Object>(falseSpec);
     assertThat(notSpecification.isSatisfiedBy(new Object())).isTrue();
-
   }
 }

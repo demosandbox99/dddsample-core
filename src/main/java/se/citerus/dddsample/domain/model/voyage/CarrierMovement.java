@@ -1,18 +1,14 @@
 package se.citerus.dddsample.domain.model.voyage;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
-import java.time.Instant;
-
-
-/**
- * A carrier movement is a vessel voyage from one location to another.
- */
+/** A carrier movement is a vessel voyage from one location to another. */
 @Entity(name = "CarrierMovement")
 @Table(name = "CarrierMovement")
 public final class CarrierMovement implements ValueObject<CarrierMovement> {
@@ -35,11 +31,10 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
   @Column(name = "departure_time", nullable = false)
   private Instant departureTime;
 
-  // Null object pattern 
-  public static final CarrierMovement NONE = new CarrierMovement(
-    Location.UNKNOWN, Location.UNKNOWN,
-    Instant.ofEpochMilli(0), Instant.ofEpochMilli(0)
-  );
+  // Null object pattern
+  public static final CarrierMovement NONE =
+      new CarrierMovement(
+          Location.UNKNOWN, Location.UNKNOWN, Instant.ofEpochMilli(0), Instant.ofEpochMilli(0));
 
   /**
    * Constructor.
@@ -50,12 +45,14 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
    * @param arrivalTime time of arrival
    */
   // TODO make package local
-  public CarrierMovement(Location departureLocation,
-                         Location arrivalLocation,
-                         Instant departureTime,
-                         Instant arrivalTime) {
+  public CarrierMovement(
+      Location departureLocation,
+      Location arrivalLocation,
+      Instant departureTime,
+      Instant arrivalTime) {
     //noinspection ObviousNullCheck
-    Validate.noNullElements(new Object[]{departureLocation, arrivalLocation, departureTime, arrivalTime});
+    Validate.noNullElements(
+        new Object[] {departureLocation, arrivalLocation, departureTime, arrivalTime});
     this.departureTime = departureTime;
     this.arrivalTime = arrivalTime;
     this.departureLocation = departureLocation;
@@ -102,26 +99,26 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().
-      append(this.departureLocation).
-      append(this.departureTime).
-      append(this.arrivalLocation).
-      append(this.arrivalTime).
-      toHashCode();
+    return new HashCodeBuilder()
+        .append(this.departureLocation)
+        .append(this.departureTime)
+        .append(this.arrivalLocation)
+        .append(this.arrivalTime)
+        .toHashCode();
   }
 
   @Override
   public boolean sameValueAs(CarrierMovement other) {
-    return other != null && new EqualsBuilder().
-      append(this.departureLocation, other.departureLocation).
-      append(this.departureTime, other.departureTime).
-      append(this.arrivalLocation, other.arrivalLocation).
-      append(this.arrivalTime, other.arrivalTime).
-      isEquals();
+    return other != null
+        && new EqualsBuilder()
+            .append(this.departureLocation, other.departureLocation)
+            .append(this.departureTime, other.departureTime)
+            .append(this.arrivalLocation, other.arrivalLocation)
+            .append(this.arrivalTime, other.arrivalTime)
+            .isEquals();
   }
 
   CarrierMovement() {
     // Needed by Hibernate
   }
-
 }

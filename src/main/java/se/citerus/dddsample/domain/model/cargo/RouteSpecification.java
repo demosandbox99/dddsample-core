@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.Instant;
+import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,16 +13,12 @@ import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.shared.AbstractSpecification;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
-import java.time.Instant;
-import java.util.Objects;
-
 /**
- * Route specification. Describes where a cargo origin and destination is,
- * and the arrival deadline.
- * 
+ * Route specification. Describes where a cargo origin and destination is, and the arrival deadline.
  */
 @Embeddable
-public class RouteSpecification extends AbstractSpecification<Itinerary> implements ValueObject<RouteSpecification> {
+public class RouteSpecification extends AbstractSpecification<Itinerary>
+    implements ValueObject<RouteSpecification> {
 
   @ManyToOne()
   @JoinColumn(name = "spec_origin_id")
@@ -38,11 +36,13 @@ public class RouteSpecification extends AbstractSpecification<Itinerary> impleme
    * @param destination destination location - can't be the same as the origin
    * @param arrivalDeadline arrival deadline
    */
-  public RouteSpecification(final Location origin, final Location destination, final Instant arrivalDeadline) {
+  public RouteSpecification(
+      final Location origin, final Location destination, final Instant arrivalDeadline) {
     Objects.requireNonNull(origin, "Origin is required");
     Objects.requireNonNull(destination, "Destination is required");
     Objects.requireNonNull(arrivalDeadline, "Arrival deadline is required");
-    Validate.isTrue(!origin.sameIdentityAs(destination), "Origin and destination can't be the same: " + origin);
+    Validate.isTrue(
+        !origin.sameIdentityAs(destination), "Origin and destination can't be the same: " + origin);
 
     this.origin = origin;
     this.destination = destination;
@@ -72,19 +72,20 @@ public class RouteSpecification extends AbstractSpecification<Itinerary> impleme
 
   @Override
   public boolean isSatisfiedBy(final Itinerary itinerary) {
-    return itinerary != null &&
-           origin().sameIdentityAs(itinerary.initialDepartureLocation()) &&
-           destination().sameIdentityAs(itinerary.finalArrivalLocation()) &&
-           arrivalDeadline().isAfter(itinerary.finalArrivalDate());
+    return itinerary != null
+        && origin().sameIdentityAs(itinerary.initialDepartureLocation())
+        && destination().sameIdentityAs(itinerary.finalArrivalLocation())
+        && arrivalDeadline().isAfter(itinerary.finalArrivalDate());
   }
 
   @Override
   public boolean sameValueAs(final RouteSpecification other) {
-    return other != null && new EqualsBuilder().
-      append(this.origin, other.origin).
-      append(this.destination, other.destination).
-      append(this.arrivalDeadline, other.arrivalDeadline).
-      isEquals();
+    return other != null
+        && new EqualsBuilder()
+            .append(this.origin, other.origin)
+            .append(this.destination, other.destination)
+            .append(this.arrivalDeadline, other.arrivalDeadline)
+            .isEquals();
   }
 
   @Override
@@ -99,15 +100,14 @@ public class RouteSpecification extends AbstractSpecification<Itinerary> impleme
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().
-      append(this.origin).
-      append(this.destination).
-      append(this.arrivalDeadline).
-      toHashCode();
+    return new HashCodeBuilder()
+        .append(this.origin)
+        .append(this.destination)
+        .append(this.arrivalDeadline)
+        .toHashCode();
   }
 
   protected RouteSpecification() {
     // Needed by Hibernate
   }
-
 }

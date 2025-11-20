@@ -1,21 +1,18 @@
 package se.citerus.dddsample.application;
 
+import java.time.Instant;
+import java.util.List;
 import se.citerus.dddsample.domain.model.cargo.Itinerary;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 
-import java.time.Instant;
-import java.util.List;
-
-/**
- * Cargo booking service.
- */
+/** Cargo booking service. */
 public interface BookingService {
 
   /**
    * Registers a new cargo in the tracking system, not yet routed.
    *
-   * @param origin      cargo origin
+   * @param origin cargo origin
    * @param destination cargo destination
    * @param arrivalDeadline arrival deadline
    * @return Cargo tracking id
@@ -43,5 +40,4 @@ public interface BookingService {
    * @param unLocode UN locode of new destination
    */
   void changeDestination(TrackingId trackingId, UnLocode unLocode);
-
 }

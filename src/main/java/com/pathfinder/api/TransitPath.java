@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-/**
- *
- */
+/** */
 public final class TransitPath implements Serializable {
 
   private final List<TransitEdge> transitEdges;

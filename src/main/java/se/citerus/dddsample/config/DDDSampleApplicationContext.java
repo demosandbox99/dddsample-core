@@ -25,69 +25,67 @@ import se.citerus.dddsample.infrastructure.routing.ExternalRoutingService;
 import se.citerus.dddsample.infrastructure.sampledata.SampleDataGenerator;
 import se.citerus.dddsample.interfaces.InterfacesApplicationContext;
 
-
 @Configuration
 @Import({InterfacesApplicationContext.class, InfrastructureMessagingJmsConfig.class})
 public class DDDSampleApplicationContext {
 
-    @Autowired
-    private CargoRepository cargoRepository;
+  @Autowired private CargoRepository cargoRepository;
 
-    @Autowired
-    private VoyageRepository voyageRepository;
+  @Autowired private VoyageRepository voyageRepository;
 
-    @Autowired
-    private LocationRepository locationRepository;
+  @Autowired private LocationRepository locationRepository;
 
-    @Autowired
-    private HandlingEventRepository handlingEventRepository;
+  @Autowired private HandlingEventRepository handlingEventRepository;
 
-    @Autowired
-    private GraphTraversalService graphTraversalService;
+  @Autowired private GraphTraversalService graphTraversalService;
 
-    @Autowired
-    private ApplicationEvents applicationEvents;
+  @Autowired private ApplicationEvents applicationEvents;
 
-    @Bean
-    public CargoFactory cargoFactory() {
-        return new CargoFactory(locationRepository, cargoRepository);
-    }
+  @Bean
+  public CargoFactory cargoFactory() {
+    return new CargoFactory(locationRepository, cargoRepository);
+  }
 
-    @Bean
-    public BookingService bookingService(CargoFactory cargoFactory,RoutingService routingService) {
-        return new BookingServiceImpl(cargoRepository, locationRepository, routingService, cargoFactory);
-    }
+  @Bean
+  public BookingService bookingService(CargoFactory cargoFactory, RoutingService routingService) {
+    return new BookingServiceImpl(
+        cargoRepository, locationRepository, routingService, cargoFactory);
+  }
 
-    @Bean
-    public CargoInspectionService cargoInspectionService() {
-        return new CargoInspectionServiceImpl(applicationEvents, cargoRepository, handlingEventRepository);
-    }
+  @Bean
+  public CargoInspectionService cargoInspectionService() {
+    return new CargoInspectionServiceImpl(
+        applicationEvents, cargoRepository, handlingEventRepository);
+  }
 
-    @Bean
-    public HandlingEventService handlingEventService(HandlingEventFactory handlingEventFactory) {
-        return new HandlingEventServiceImpl(handlingEventRepository, applicationEvents, handlingEventFactory);
-    }
+  @Bean
+  public HandlingEventService handlingEventService(HandlingEventFactory handlingEventFactory) {
+    return new HandlingEventServiceImpl(
+        handlingEventRepository, applicationEvents, handlingEventFactory);
+  }
 
-    @Bean
-    public HandlingEventFactory handlingEventFactory() {
-        return new HandlingEventFactory(cargoRepository, voyageRepository, locationRepository);
-    }
+  @Bean
+  public HandlingEventFactory handlingEventFactory() {
+    return new HandlingEventFactory(cargoRepository, voyageRepository, locationRepository);
+  }
 
-    @Bean
-    public RoutingService routingService() {
-        return new ExternalRoutingService(graphTraversalService, locationRepository, voyageRepository);
-    }
+  @Bean
+  public RoutingService routingService() {
+    return new ExternalRoutingService(graphTraversalService, locationRepository, voyageRepository);
+  }
 
-    @Bean
-    public SampleDataGenerator sampleDataGenerator(CargoRepository cargoRepository,
-                                                   VoyageRepository voyageRepository,
-                                                   LocationRepository locationRepository,
-                                                   HandlingEventRepository handlingEventRepository,
-                                                   PlatformTransactionManager platformTransactionManager) {
-        return new SampleDataGenerator(cargoRepository,
-            voyageRepository,
-            locationRepository,
-            handlingEventRepository,
-            platformTransactionManager);
-    }
+  @Bean
+  public SampleDataGenerator sampleDataGenerator(
+      CargoRepository cargoRepository,
+      VoyageRepository voyageRepository,
+      LocationRepository locationRepository,
+      HandlingEventRepository handlingEventRepository,
+      PlatformTransactionManager platformTransactionManager) {
+    return new SampleDataGenerator(
+        cargoRepository,
+        voyageRepository,
+        locationRepository,
+        handlingEventRepository,
+        platformTransactionManager);
+  }
 }

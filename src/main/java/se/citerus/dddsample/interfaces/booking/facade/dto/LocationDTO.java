@@ -2,9 +2,7 @@ package se.citerus.dddsample.interfaces.booking.facade.dto;
 
 import java.io.Serializable;
 
-/**
- * Location DTO.
- */
+/** Location DTO. */
 public class LocationDTO implements Serializable {
 
   private final String unLocode;
@@ -22,5 +20,4 @@ public class LocationDTO implements Serializable {
   public String getName() {
     return name;
   }
-  
 }

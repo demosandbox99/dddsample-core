@@ -1,18 +1,14 @@
 package se.citerus.dddsample.infrastructure.sampledata;
 
-import se.citerus.dddsample.domain.model.location.Location;
-import se.citerus.dddsample.domain.model.location.UnLocode;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import se.citerus.dddsample.domain.model.location.Location;
+import se.citerus.dddsample.domain.model.location.UnLocode;
 
-/**
- * Sample locations, for test purposes.
- * 
- */
+/** Sample locations, for test purposes. */
 public class SampleLocations {
 
   public static final Location HONGKONG = new Location(new UnLocode("CNHKG"), "Hongkong");
@@ -51,5 +47,4 @@ public class SampleLocations {
   public static Location lookup(UnLocode unLocode) {
     return ALL.get(unLocode);
   }
-
 }

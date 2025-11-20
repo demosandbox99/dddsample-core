@@ -30,5 +30,4 @@ public interface CargoRepository {
    * @return A unique, generated tracking Id.
    */
   TrackingId nextTrackingId();
-
 }

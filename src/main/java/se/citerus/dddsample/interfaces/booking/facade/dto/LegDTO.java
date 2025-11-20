@@ -3,9 +3,7 @@ package se.citerus.dddsample.interfaces.booking.facade.dto;
 import java.io.Serializable;
 import java.time.Instant;
 
-/**
- * DTO for a leg in an itinerary.
- */
+/** DTO for a leg in an itinerary. */
 public final class LegDTO implements Serializable {
 
   private final String voyageNumber;
@@ -23,7 +21,12 @@ public final class LegDTO implements Serializable {
    * @param loadTime
    * @param unloadTime
    */
-  public LegDTO(final String voyageNumber, final String from, final String to, Instant loadTime, Instant unloadTime) {
+  public LegDTO(
+      final String voyageNumber,
+      final String from,
+      final String to,
+      Instant loadTime,
+      Instant unloadTime) {
     this.voyageNumber = voyageNumber;
     this.from = from;
     this.to = to;
@@ -50,5 +53,4 @@ public final class LegDTO implements Serializable {
   public Instant getUnloadTime() {
     return unloadTime;
   }
-  
 }
