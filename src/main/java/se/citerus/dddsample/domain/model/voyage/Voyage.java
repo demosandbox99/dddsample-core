@@ -1,21 +1,17 @@
 package se.citerus.dddsample.domain.model.voyage;
 
 import jakarta.persistence.*;
-import se.citerus.dddsample.domain.model.location.Location;
-import se.citerus.dddsample.domain.shared.DomainEntity;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import se.citerus.dddsample.domain.model.location.Location;
+import se.citerus.dddsample.domain.shared.DomainEntity;
 
-/**
- * A Voyage.
- */
+/** A Voyage. */
 @Entity(name = "Voyage")
 @Table(name = "Voyage")
 public class Voyage implements DomainEntity<Voyage> {
-
 
   @Column(name = "voyage_number", unique = true)
   private String voyageNumber;
@@ -29,10 +25,9 @@ public class Voyage implements DomainEntity<Voyage> {
   }
 
   // Null object pattern
-  @Transient
-  public static final Voyage NONE = new Voyage(new VoyageNumber(""), Schedule.EMPTY);
+  @Transient public static final Voyage NONE = new Voyage(new VoyageNumber(""), Schedule.EMPTY);
 
-    public Voyage(final VoyageNumber voyageNumber, final Schedule schedule) {
+  public Voyage(final VoyageNumber voyageNumber, final Schedule schedule) {
     Objects.requireNonNull(voyageNumber, "Voyage number is required");
     Objects.requireNonNull(schedule, "Schedule is required");
 
@@ -80,11 +75,9 @@ public class Voyage implements DomainEntity<Voyage> {
     return "Voyage " + voyageNumber;
   }
 
-
-
   /**
-   * Builder pattern is used for incremental construction
-   * of a Voyage aggregate. This serves as an aggregate factory.
+   * Builder pattern is used for incremental construction of a Voyage aggregate. This serves as an
+   * aggregate factory.
    */
   public static final class Builder {
 
@@ -100,8 +93,10 @@ public class Voyage implements DomainEntity<Voyage> {
       this.departureLocation = departureLocation;
     }
 
-    public Builder addMovement(Location arrivalLocation, Instant departureTime, Instant arrivalTime) {
-      carrierMovements.add(new CarrierMovement(departureLocation, arrivalLocation, departureTime, arrivalTime));
+    public Builder addMovement(
+        Location arrivalLocation, Instant departureTime, Instant arrivalTime) {
+      carrierMovements.add(
+          new CarrierMovement(departureLocation, arrivalLocation, departureTime, arrivalTime));
       // Next departure location is the same as this arrival location
       this.departureLocation = arrivalLocation;
       return this;
@@ -110,7 +105,5 @@ public class Voyage implements DomainEntity<Voyage> {
     public Voyage build() {
       return new Voyage(voyageNumber, new Schedule(carrierMovements));
     }
-
   }
-
 }
